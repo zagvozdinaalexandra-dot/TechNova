@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>TechNova Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f8fafc; }
+        
+        .slide { display: none; width: 100vw; height: 100vh; }
+        .slide.active { display: block; }
+
+        /* Боковые кнопки навигации */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: transparent;
+        }
+
+        /* Эффект при наведении на боковую область */
+        .side-nav:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .side-nav.left { left: 0; }
+        .side-nav.right { right: 0; }
+
+        /* Сами стрелки */
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #374151;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 1px solid rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            opacity: 0.7; /* Делаем полупрозрачными, чтобы не отвлекали */
+            transition: opacity 0.3s, transform 0.2s;
+        }
+
+        .side-nav:hover .nav-arrow {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Счетчик страниц (маленький и аккуратный в углу) */
+        .page-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #374151;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: monospace;
+            z-index: 1001;
+            pointer-events: none;
+            border: 1px solid rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-counter" id="counter">1 / 12</div>
+
+    <div class="side-nav left" onclick="changeSlide(-1)">
+        <div class="nav-arrow">←</div>
+    </div>
+
+    <div class="side-nav right" onclick="changeSlide(1)">
+        <div class="nav-arrow">→</div>
+    </div>
+
+    <div id="slide1" class="slide active"><iframe src="index1.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide2" class="slide"><iframe src="index2.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide3" class="slide"><iframe src="index3.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide4" class="slide"><iframe src="index4.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide5" class="slide"><iframe src="index5.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide6" class="slide"><iframe src="index6.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide7" class="slide"><iframe src="index7.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide8" class="slide"><iframe src="index8.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide9" class="slide"><iframe src="index9.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide10" class="slide"><iframe src="index10.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide11" class="slide"><iframe src="index11.html" class="w-full h-full border-none"></iframe></div>
+    <div id="slide12" class="slide"><iframe src="index12.html" class="w-full h-full border-none"></iframe></div>
+
+    <script>
+        let current = 1;
+        const total = 12;
+
+        function changeSlide(dir) {
+            const next = current + dir;
+            if (next < 1 || next > total) return;
+
+            document.getElementById(`slide${current}`).classList.remove('active');
+            current = next;
+            document.getElementById(`slide${current}`).classList.add('active');
+            
+            document.getElementById('counter').innerText = `${current} / ${total}`;
+        }
+
+        // Управление стрелками клавиатуры
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight") changeSlide(1);
+            if (e.key === "ArrowLeft") changeSlide(-1);
+        });
+    </script>
+</body>
+</html>

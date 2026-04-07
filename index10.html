@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --header-text: #1a237e;
+            --table-header: #121841;
+            --border-color: #e0e6ed;
+            --conf-color: #1e88e5;
+            --integ-color: #4caf50;
+            --avail-color: #f44336;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .title-block h1 {
+            color: var(--header-text);
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .title-block p {
+            color: #555;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .circles {
+            display: flex;
+            gap: 20px;
+        }
+
+        .circle-item {
+            width: 130px;
+            text-align: center;
+        }
+
+        .circle {
+            width: 80px;
+            height: 80px;
+            border: 3px solid;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .circle-conf { border-color: var(--conf-color); color: var(--conf-color); }
+        .circle-integ { border-color: var(--integ-color); color: var(--integ-color); }
+        .circle-avail { border-color: var(--avail-color); color: var(--avail-color); }
+
+        .circle-desc {
+            font-size: 11px;
+            line-height: 1.3;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        thead {
+            background-color: var(--table-header);
+            color: white;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .principle {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <div class="title-block">
+            <h1>Security Mapping:<br>The CIA Triad</h1>
+            <p>Connecting Defenses to Core<br>Cybersecurity Principles</p>
+        </div>
+
+        <div class="circles">
+            <div class="circle-item">
+                <div class="circle circle-conf">Confidentiality</div>
+                <div class="circle-desc">Only authorised people can access the data</div>
+            </div>
+            <div class="circle-item">
+                <div class="circle circle-integ">Integrity</div>
+                <div class="circle-desc">Data cannot be secretly changed or corrupted</div>
+            </div>
+            <div class="circle-item">
+                <div class="circle circle-avail">Availability</div>
+                <div class="circle-desc">Systems are accessible when needed</div>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Threat / Device</th>
+                <th>Principle Protected</th>
+                <th>Defense Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="mono">Router — Hacker</td>
+                <td class="principle">Confidentiality</td>
+                <td>Firewall prevents unauthorized reading of private network data.</td>
+            </tr>
+            <tr>
+                <td class="mono">Dev PC — Virus</td>
+                <td class="principle">Integrity</td>
+                <td>Antivirus stops malware from modifying or corrupting source code.</td>
+            </tr>
+            <tr>
+                <td class="mono">Finance — Phishing</td>
+                <td class="principle">Confidentiality</td>
+                <td>Spam filter prevents credential theft and financial data exposure.</td>
+            </tr>
+            <tr>
+                <td class="mono">Manager — VPN</td>
+                <td class="principle">Confidentiality</td>
+                <td>Encryption prevents interception of remote data on public internet.</td>
+            </tr>
+            <tr>
+                <td class="mono">Cloud Server — 2FA</td>
+                <td class="principle">Conf. & Integrity</td>
+                <td>Stops unauthorized logins from viewing or corrupting company records.</td>
+            </tr>
+            <tr>
+                <td class="mono">Guest Wi-Fi — VLAN</td>
+                <td class="principle">Confidentiality</td>
+                <td>Ensures visitors have zero visibility into internal company systems.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

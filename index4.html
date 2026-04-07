@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #87ceeb;
+            --neon-red: #ffffff;
+            --neon-green: #98fb98;
+        }
+
+        body {
+            background-color: #f8fafc;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #374151;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
+
+        /* Анимированный фон кибер-сетки */
+        .cyber-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            perspective: 1000px;
+            z-index: -1;
+        }
+
+        .cyber-grid::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, #ffffff 80%);
+        }
+
+        /* Свечение щита */
+        .shield-glow {
+            filter: drop-shadow(0 0 15px var(--neon-blue));
+            transition: all 0.3s ease;
+        }
+
+        .shield-hit {
+            filter: drop-shadow(0 0 30px var(--neon-red)) !important;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Частицы данных */
+        .data-packet {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #f472b6, #f97316, #38bdf8);
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 14px rgba(248, 113, 113, 0.9), 0 0 18px rgba(96, 165, 250, 0.9), 0 0 22px rgba(251, 191, 36, 0.8);
+            animation: data-color 1.2s linear infinite alternate, data-pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes data-color {
+            0% { transform: translateY(0) scale(0.85); opacity: 0.9; filter: hue-rotate(0deg); }
+            50% { transform: translateY(-6px) scale(1); opacity: 1; filter: hue-rotate(90deg); }
+            100% { transform: translateY(-10px) scale(0.9); opacity: 0.8; filter: hue-rotate(180deg); }
+        }
+
+        @keyframes data-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Глитч анимация */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .glitch-active {
+            animation: glitch 0.2s infinite;
+        }
+
+        /* Кастомные карточки */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .threat-panel { border-color: rgba(255, 0, 85, 0.3); }
+        .secure-panel { border-color: rgba(0, 255, 157, 0.3); }
+
+        .action-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 0.8rem;
+            border: 2px solid transparent;
+            background: linear-gradient(145deg, #0ea5e9 0%, #0d9488 100%);
+            color: #ffffff;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+            transition: all 0.25s ease;
+            overflow: hidden;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.35);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="cyber-grid"></div>
+
+    <div class="w-full max-w-6xl z-10">
+        <div class="mb-10 flex justify-between items-end border-b border-cyan-900/50 pb-4">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tighter text-cyan-400">PERIMETER_DEFENSE_PRO_v4</h1>
+                <p class="text-xs text-cyan-700">STATUS: ACTIVE // ENCRYPTION: AES-256</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs text-slate-500 uppercase">CIA Principle</p>
+                <p class="text-lg font-bold text-emerald-400">CONFIDENTIALITY</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-12 items-center relative">
+
+            <div id="hacker-zone" class="glass-panel threat-panel rounded-xl p-6 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-full h-1 bg-red-600/50"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <span class="text-[10px] text-red-500 font-bold tracking-widest uppercase">External Threat</span>
+                    <span class="animate-pulse text-red-500 text-xs">● SIGNAL DETECTED</span>
+                </div>
+                <div class="flex flex-col items-center py-6">
+                    <div class="relative">
+                        <span class="text-7xl mb-4 block group-hover:scale-110 transition-transform">💀</span>
+                        <div class="absolute inset-0 bg-red-500 blur-3xl opacity-20"></div>
+                    </div>
+                    <h3 class="text-2xl font-black text-red-500 tracking-tighter mt-4">CRITICAL_THREAT</h3>
+                    <p class="text-[10px] text-slate-500 mt-2 font-mono">IP: 192.168.0.666 [SPOOFED]</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <div id="firewall-container" class="relative">
+                    <div id="shield-core" class="shield-glow">
+                        <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-cyan-400">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6.119c-.035.505-.053 1.015-.053 1.528 0 5.103 3.32 9.428 7.973 10.94a11.97 11.97 0 01-7.973-10.94c0-.513.018-1.023.053-1.528A11.959 11.959 0 0112 2.714z" />
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+
+                    <div id="denied-tag" class="absolute -top-12 left-1/2 -translate-x-1/2 bg-red-600 text-white text-xs font-bold px-4 py-2 rounded-md scale-0 transition-transform shadow-[0_0_20px_rgba(220,38,38,0.5)]">
+                        THREAT_NEUTRALIZED
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel secure-panel rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-emerald-600/50"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <span class="text-[10px] text-emerald-500 font-bold tracking-widest uppercase">Internal Network</span>
+                    <span class="text-emerald-500 text-xs">● SECURE</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-lg flex items-center gap-4">
+                        <div class="text-2xl">📡</div>
+                        <div>
+                            <p class="text-xs font-bold">CORE_ROUTER</p>
+                            <p class="text-[10px] text-slate-500 italic">10.0.0.1</p>
+                        </div>
+                    </div>
+                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-emerald-500 w-full animate-[pulse_2s_infinite]"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-20 flex justify-center">
+            <button onclick="triggerAdvancedAttack()" class="action-btn">
+                <span>Execute Attack Simulation</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function triggerAdvancedAttack() {
+            const shield = document.getElementById('shield-core');
+            const hackerZone = document.getElementById('hacker-zone');
+            const tag = document.getElementById('denied-tag');
+            const firewallContainer = document.getElementById('firewall-container');
+
+            // 1. Активируем глитч на хакере
+            hackerZone.classList.add('glitch-active');
+
+            // 2. Генерируем "пакеты" данных (частицы)
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => createPacket(), i * 30);
+            }
+
+            // 3. Реакция щита при контакте
+            setTimeout(() => {
+                shield.classList.add('shield-hit');
+                tag.classList.add('scale-100');
+
+                // Вибрация всего контейнера
+                firewallContainer.classList.add('glitch-active');
+
+                setTimeout(() => {
+                    shield.classList.remove('shield-hit');
+                    tag.classList.remove('scale-100');
+                    hackerZone.classList.remove('glitch-active');
+                    firewallContainer.classList.remove('glitch-active');
+                }, 1200);
+            }, 600);
+        }
+
+        function createPacket() {
+            const packet = document.createElement('div');
+            packet.className = 'data-packet';
+
+            // Начальная позиция (зона хакера)
+            const startX = window.innerWidth * 0.25;
+            const startY = window.innerHeight * 0.45 + (Math.random() * 100 - 50);
+
+            packet.style.left = startX + 'px';
+            packet.style.top = startY + 'px';
+
+            document.body.appendChild(packet);
+
+            // Анимация полета к щиту
+            const targetX = window.innerWidth * 0.45;
+            const targetY = window.innerHeight * 0.5 + (Math.random() * 60 - 30);
+
+            const anim = packet.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${targetX - startX}px, ${targetY - startY}px)`, opacity: 1 }
+            ], {
+                duration: 600,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+
+            anim.onfinish = () => {
+                // Эффект взрыва частицы о щит
+                createExplosion(targetX, targetY);
+                packet.remove();
+            };
+        }
+
+        function createExplosion(x, y) {
+            for (let i = 0; i < 5; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'data-packet';
+                spark.style.background = i % 2 === 0 ? 'var(--neon-blue)' : 'var(--neon-red)';
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                document.body.appendChild(spark);
+
+                spark.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px) scale(0)`, opacity: 0 }
+                ], { duration: 400 }).onfinish = () => spark.remove();
+            }
+        }
+    </script>
+</body>
+</html>

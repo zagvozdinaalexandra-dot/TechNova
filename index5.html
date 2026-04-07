@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
+
+        .terminal-window {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #1e293b;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .log-container::-webkit-scrollbar { width: 4px; }
+        .log-container::-webkit-scrollbar-track { background: transparent; }
+        .log-container::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            padding: 0.95rem 1.5rem;
+            border-radius: 0.9rem;
+            border: 0;
+            background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+            color: #ffffff;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            box-shadow: 0 12px 28px rgba(14, 165, 233, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #60a5fa 0%, #38bdf8 100%);
+            box-shadow: 0 16px 32px rgba(14, 165, 233, 0.5);
+        }
+
+        .action-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 8px 18px rgba(14, 165, 233, 0.25);
+        }
+
+        @keyframes pulse { 50% { opacity: .5; } }
+
+        .glitch-text {
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px,0) skew(0deg); }
+            4%, 60% { transform: translate(-2px,0) skew(0deg); }
+            62% { transform: translate(0,0) skew(5deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-8 crt">
+
+    <div class="w-full max-w-5xl z-10">
+        <div class="mb-6 flex justify-between items-center border-b border-slate-800 pb-4">
+            <div>
+                <h1 class="text-xl font-bold text-emerald-500 uppercase tracking-tighter">Endpoint Defense v2.4.0</h1>
+                <p class="text-xs text-slate-500">HOST: DEV-STATION-01 // IP: 192.168.1.10</p>
+            </div>
+            <div class="text-right">
+                <span class="text-[10px] block text-slate-600">PROTECTION LAYER</span>
+                <span class="text-sm font-bold text-blue-400">INTEGRITY GUARD</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-4 space-y-6">
+                <div class="terminal-window rounded-lg p-5">
+                    <h3 class="text-xs font-bold mb-4 text-slate-500 uppercase">System Status</h3>
+                    <div id="status-box" class="text-center py-6 bg-red-500/5 border border-red-500/20 rounded">
+                        <div id="status-icon" class="text-5xl mb-2">⚠️</div>
+                        <div id="status-text" class="text-red-500 font-bold glitch-text">MALWARE_DETECTED</div>
+                    </div>
+                </div>
+
+                <div class="terminal-window rounded-lg p-5">
+                    <h3 class="text-xs font-bold mb-4 text-slate-500 uppercase">Security Metrics</h3>
+                    <div class="space-y-3 text-[11px]">
+                        <div class="flex justify-between"><span>CPU Usage:</span><span class="text-emerald-500">12.4%</span></div>
+                        <div class="flex justify-between"><span>Memory Guard:</span><span class="text-emerald-500">ACTIVE</span></div>
+                        <div class="flex justify-between"><span>FileSystem:</span><span class="text-red-500">COMPROMISED</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-8">
+                <div class="terminal-window rounded-lg h-[450px] flex flex-col">
+                    <div class="bg-slate-800/50 px-4 py-2 flex items-center gap-2 border-b border-slate-700">
+                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                        <span class="ml-4 text-[10px] text-slate-400 uppercase tracking-widest">Scanner Terminal output</span>
+                    </div>
+                    <div id="log" class="log-container p-6 text-[12px] leading-relaxed overflow-y-auto flex-grow font-mono">
+                        <div class="text-slate-500">> Waiting for user input...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 flex justify-center">
+            <button id="scan-btn" onclick="startAdvancedScan()" class="group relative px-16 py-4 bg-transparent border border-emerald-500 text-emerald-500 font-bold uppercase tracking-widest transition-all hover:bg-emerald-500 hover:text-black hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                [ Initialize System Clean ]
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const directories = [
+            '/sys/kernel/security/', '/usr/bin/local/', '/etc/shadow/', '/home/user/downloads/',
+            '/tmp/runtime-root/', '/var/log/auth.log', '/proc/self/mem', '/lib/modules/ext4'
+        ];
+
+        const threats = [
+            'Trojan.Linux.Generic', 'Backdoor.Shell.Agent', 'Rootkit.Kernel.Hide', 'Miner.XMR.Worker'
+        ];
+
+        function addLog(text, type = 'info') {
+            const log = document.getElementById('log');
+            const div = document.createElement('div');
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+
+            let color = 'text-slate-400';
+            if (type === 'warn') color = 'text-amber-400';
+            if (type === 'error') color = 'text-red-500 font-bold';
+            if (type === 'success') color = 'text-emerald-400';
+
+            div.innerHTML = `<span class="text-slate-600">[${time}]</span> <span class="${color}">${text}</span>`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function startAdvancedScan() {
+            const btn = document.getElementById('scan-btn');
+            const statusBox = document.getElementById('status-box');
+            const statusIcon = document.getElementById('status-icon');
+            const statusText = document.getElementById('status-text');
+
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+
+            addLog('SYSTEM_SCAN_START: Deep inspection initialized...', 'warn');
+
+            for (let i = 0; i < 20; i++) {
+                const dir = directories[Math.floor(Math.random() * directories.length)];
+                addLog(`Checking: ${dir}${Math.random().toString(36).substring(7)}...`);
+                await new Promise(r => setTimeout(r, 100));
+
+                if (i === 5) addLog(`ALERT: Found suspicious pattern in ${dir}`, 'error');
+                if (i === 12) addLog(`THREAT_MATCH: ${threats[Math.floor(Math.random() * threats.length)]}`, 'error');
+            }
+
+            addLog('REMEDIATION_PHASE: Isolated threats found. Starting deletion...', 'warn');
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Завершение
+            statusBox.classList.replace('bg-red-500/5', 'bg-emerald-500/10');
+            statusBox.classList.replace('border-red-500/20', 'border-emerald-500/40');
+            statusIcon.innerText = '🛡️';
+            statusText.innerText = 'SYSTEM_SECURED';
+            statusText.classList.replace('text-red-500', 'text-emerald-500');
+            statusText.classList.remove('glitch-text');
+
+            addLog('SUCCESS: All malware instances removed from memory and disk.', 'success');
+            addLog('SYSTEM_INTEGRITY: 100% verified.', 'success');
+        }
+    </script>
+</body>
+</html>

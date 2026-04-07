@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отображение скриншота</title>
+    <style>
+        /* Стили для красивого отображения */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Центрирование по горизонтали */
+            align-items: center;    /* Центрирование по вертикали */
+            min-height: 100vh;      /* Высота во весь экран */
+            background-color: #f8fafc;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 40px 40px; /* Легкий фон вокруг */
+            font-family: sans-serif;
+        }
+
+        .image-container {
+            /* Белая рамка с тенью, как на скриншоте */
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+            /* Ограничиваем максимальную ширину, чтобы не растягивалось слишком сильно */
+            max-width: 90%;
+            display: flex;
+        }
+
+        .image-container img {
+            /* Самое важное для адаптивности */
+            max-width: 100%;  /* Картинка не станет шире контейнера */
+            height: auto;     /* Пропорции сохраняются */
+            display: block;
+            border-radius: 4px; /* Легкое закругление самой картинки */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="image-container">
+        <img src="images/2026-04-01_13-52.png" alt="Скриншот панели управления безопасностью">
+    </div>
+
+</body>
+</html>
